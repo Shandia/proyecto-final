@@ -36,4 +36,4 @@ def test_register_duplicate_email():
     # Tendríamos que obtener un error al entrar email duplicado
     response = client.post("/register", json=user_data)
     assert response.status_code == 400
-    assert response.json()["detail"] == "Email already registered"
+    assert response.json()["detail"] == "Email already registered, try another or log in"
