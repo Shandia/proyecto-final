@@ -6,3 +6,4 @@ python-dotenv
 bcrypt
 pydantic
 passlib[bcrypt]
+pytest
