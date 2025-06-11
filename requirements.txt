@@ -7,3 +7,4 @@ bcrypt
 pydantic
 passlib[bcrypt]
 pytest
+httpx
