@@ -1,7 +1,7 @@
 from fastapi.testclient import TestClient
 from app.main import app
 
-client = Testclient(app)
+client = TestClient(app)
 
 # Función que comprueba el login correcto
 def test_login_success():
