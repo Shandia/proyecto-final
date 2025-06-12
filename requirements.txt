@@ -10,3 +10,4 @@ passlib[bcrypt]
 pytest
 httpx
 python-jose
+python-multipart
