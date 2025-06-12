@@ -9,6 +9,7 @@ pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 def get_user_by_email(db: Session, email: str):
     return db.query(models.User).filter(models.User.email == email).first()
 
+# Función utilizada para la creación de un nuevo usuario
 def create_user(db: Session, user: schemas.UserCreate):
     hashed_password = pwd_context.hash(user.password)
     db_user = models.User(
@@ -23,6 +24,7 @@ def create_user(db: Session, user: schemas.UserCreate):
     db.refresh(db_user)
     return db_user
 
+# Función utilizada para hacer la validación de auth al login
 def authenticate_user(db: Session, email: str, password: str):
     user = get_user_by_email(db, email)
     if not user:
@@ -30,3 +32,7 @@ def authenticate_user(db: Session, email: str, password: str):
     if not pwd_context.verify(password, user.hashed_password):
         return False
     return user
+
+# Función que devuelve todos los usuarios
+def get_all_users(db: Session):
+    return db.query(models.User).all()

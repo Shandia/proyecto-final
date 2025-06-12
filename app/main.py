@@ -6,6 +6,8 @@ from datetime import datetime, timedelta, timezone
 
 from . import models, schemas, crud
 from .database import SessionLocal, engine, Base
+from .auth import get_current_user, require_admin
+from .startup import create_default_admin
 
 from dotenv import load_dotenv
 import os
@@ -18,6 +20,9 @@ ACCESS_TOKEN_EXPIRE_MINUTES = int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES"))
 
 # Creación de las tablas en la base de datos si no existen, en nuestro caso User
 Base.metadata.create_all(bind=engine)
+
+# Creación de un usuario default admin para hacer pruebas en fase de desarrollo
+create_default_admin()
 
 # Instancia de la aplicación
 app = FastAPI()
@@ -51,3 +56,20 @@ def login_user(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = D
     access_token = jwt.encode(payload, SECRET_KEY, algorithm=ALGORITHM)
 
     return {"access_token": access_token, "token_type": "bearer"}
+
+# ENDPOINT: Obtener todos los usuarios (rol: admin)
+@app.get("/users", response_model=list[schemas.UserOut])
+def get_all_users(db: Session = Depends(get_db), current_user: models.User = Depends(require_admin)):
+    return db.query(models.User).all()
+
+# ENDPOINT: Crear usuarios desde el panel administrador
+@app.post("/admin/create-user", response_model=schemas.UserOut)
+def admin_create_user(
+    user: schemas.UserCreate,
+    db: Session = Depends(get_db),
+    current_user: models.User = Depends(require_admin)
+):
+    db_user = crud.get_user_by_email(db, user.email)
+    if db_user:
+        raise HTTPException(status_code=400, detail="Email already registered")
+    return crud.create_user(db, user)
