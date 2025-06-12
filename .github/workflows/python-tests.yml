@@ -4,7 +4,7 @@ on:
   push:
     # Ejecutamos esta prueba sobre la feature al hacer un push
     branches:
-      - feature/registro-usuarios
+      - 'feature/**'
   pull_request:
     # Ejecutamos esta prueba también al hacer una pull request sobre main
     branches:
