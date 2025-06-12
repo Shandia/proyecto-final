@@ -5,6 +5,7 @@ psycopg2-binary
 python-dotenv
 bcrypt
 pydantic
+pydantic[email]
 passlib[bcrypt]
 pytest
 httpx
