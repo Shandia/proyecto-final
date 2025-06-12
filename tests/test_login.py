@@ -5,7 +5,15 @@ client = TestClient(app)
 
 # Función que comprueba el login correcto
 def test_login_success():
+    client.post("/register", json={
+        "email": "jaume.example@example.com",
+        "password": "12345678",
+        "first_name": "Jaume",
+        "last_name": "Florit"
+    })
+
     response = client.post("/login", data={
+        "grant_type": "password",
         "username": "jaume.example@example.com",
         "password": "12345678"
     })
