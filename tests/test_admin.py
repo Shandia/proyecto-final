@@ -43,7 +43,7 @@ def test_admin_can_create_user():
 
 def test_non_admin_cannot_view_users():
     token = get_non_admin_token()
-    response = client.get("/users", header={"Authorization": f"Bearer {token}"})
+    response = client.get("/users", headers={"Authorization": f"Bearer {token}"})
     assert response.status_code == 403
 
 def test_non_admin_cannot_create_user():
