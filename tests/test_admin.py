@@ -18,9 +18,7 @@ def ensure_admin_user():
             first_name="Admin",
             last_name="User"
         )
-        crud.create_user(db, user_data)
-        db.query(models.User).filter(models.User.email == email).update({"is_admin": True})
-        db.commit()
+        crud.create_user(db, user_data, is_admin=True)
     db.close()
 
 # Genera un token para el admin
@@ -54,7 +52,7 @@ def get_non_admin_token():
     assert response.status_code == 200
     return response.json()["access_token"]
 
-# Función que comprueba si el usuario Admin puede usar el ENDPOINT /admin/register-user
+# Función que comprueba si el usuario Admin puede usar el ENDPOINT /admin/create-user
 def test_admin_can_create_user():
     token = get_admin_token()
     email = f"nuevo_{uuid.uuid4().hex}@example.com"

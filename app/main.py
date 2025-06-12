@@ -22,7 +22,8 @@ ACCESS_TOKEN_EXPIRE_MINUTES = int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES"))
 Base.metadata.create_all(bind=engine)
 
 # Creación de un usuario default admin para hacer pruebas en fase de desarrollo
-create_default_admin()
+if os.getenv("ENV") != "test":
+    create_default_admin()
 
 # Instancia de la aplicación
 app = FastAPI()
