@@ -6,7 +6,7 @@ client = TestClient(app)
 # Función que comprueba el login correcto
 def test_login_success():
     client.post("/register", json={
-        "email": "jaume.example@example.com",
+        "email": "nuevo@nuevo.com",
         "password": "12345678",
         "first_name": "Jaume",
         "last_name": "Florit"
@@ -14,7 +14,7 @@ def test_login_success():
 
     response = client.post("/login", data={
         "grant_type": "password",
-        "username": "jaume.example@example.com",
+        "username": "nuevo@nuevo.com",
         "password": "12345678"
     })
     assert response.status_code == 200
@@ -24,7 +24,7 @@ def test_login_success():
 # Función que comprueba contraseña incorrecta con usuario que puede existir o no
 def test_login_invalid_password():
     data = {
-        "username": "jaume.example@example.com",
+        "username": "nuevo@nuevo.com",
         "password": "wrongPassword"
     }
 
